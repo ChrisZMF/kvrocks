@@ -217,15 +217,6 @@ Status SlotMigrate::Start(void) {
     return Status(Status::NotOK);
   }
 
-  // Auth first
-  std::string pass = svr_->GetConfig()->requirepass;
-  if (!pass.empty()) {
-    bool st = AuthDstServer(slot_job_->slot_fd_, pass);
-    if (!st) {
-      return Status(Status::NotOK, "Failed to auth destination server");
-    }
-  }
-
   // Set dst node importing START
   if (!SetDstImportStatus(slot_job_->slot_fd_, kImportStart)) {
     LOG(ERROR) << "[migrate] Failed to notify the destination to prepare to import data";
